@@ -1,0 +1,17 @@
+<h1>Charaktere</h1>
+
+@if (loading()) {
+  <p>Lade Charaktere...</p>
+} @else if (error()) {
+  <p>Fehler: {{ error() }}</p>
+} @else if (characters().length) {
+  <div class="grid">
+    @for (character of characters(); track character.id) {
+      <app-info-box>
+        <h2>{{ character.name }}</h2>
+      </app-info-box>
+    }
+  </div>
+} @else {
+  <p>Keine Charaktere geladen.</p>
+}

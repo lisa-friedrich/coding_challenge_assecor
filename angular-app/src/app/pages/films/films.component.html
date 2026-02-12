@@ -1,0 +1,22 @@
+<h1>Filme</h1>
+
+@if (loading()) {
+  <p>Lade Filme...</p>
+} @else if (error()) {
+  <p>Fehler: {{ error() }}</p>
+} @else if (films().length) {
+  <div class="grid">
+
+    @for (film of films(); track film.id) {
+      <app-info-box [routerLink]="['/films', film.id.toString()]">
+        <h2>{{ film.title }}</h2>
+        <p>Direktor: {{ film.director }}</p>
+        <p>Produzent: {{ film.producer }}</p>
+        <p>Erscheinungsdatum: {{ film.release_date | date:'dd.MM.yyyy' }}</p>
+      </app-info-box>
+
+    }
+  </div>
+  } @else {
+  <p>Keine Filme geladen.</p>
+}

@@ -1,0 +1,17 @@
+<h1>Planeten</h1>
+
+@if (loading()) {
+  <p>Lade Planeten...</p>
+} @else if (error()) {
+  <p>Fehler: {{ error() }}</p>
+} @else if (planets().length) {
+  <div class="grid">
+    @for (planet of planets(); track planet.id) {
+      <app-info-box>
+        <h2>{{ planet.name }}</h2>
+      </app-info-box>
+    }
+  </div>
+} @else {
+  <p>Keine Planeten geladen.</p>
+}
