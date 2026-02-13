@@ -1,7 +1,13 @@
-<app-header></app-header>
+<app-header (openForm)="openFormModal()"></app-header>
 
 <main class="main">
   <div class="content">
     <router-outlet />
   </div>
 </main>
+
+@if (modalOpen()) {
+  <app-modal title="Eingabemaske" (close)="closeFormModal()">
+    <app-form-modal (cancel)="closeFormModal()" />
+  </app-modal>
+}

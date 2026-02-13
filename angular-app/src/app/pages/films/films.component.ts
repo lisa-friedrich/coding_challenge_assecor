@@ -10,17 +10,11 @@ import { AppInfoBoxComponent } from '../../components/app-info-box/app-info-box.
   imports: [CommonModule, AppInfoBoxComponent],
   templateUrl: './films.component.html',
 })
-export class FilmsComponent implements OnInit {
+export class FilmsComponent  {
   private readonly appState = inject(AppStateService);
   private readonly swapi = inject(SwapiService);
 
   readonly films = this.appState.films;
   readonly loading = this.appState.loading;
   readonly error = this.appState.error;
-
-  ngOnInit(): void {
-    if (!this.films().length) {
-      this.swapi.loadFilms();
-    }
-  }
 }

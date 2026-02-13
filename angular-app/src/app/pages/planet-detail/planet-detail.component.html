@@ -1,0 +1,38 @@
+<div class="film-detail detail-box">
+@if (planet(); as p) {
+  <div class="film-detail__header">
+    <span class="info-box-detail__topline">Planetendetails</span>
+    <h1>{{ p.name }}</h1>
+  </div>
+
+  <div class="film-detail__content">
+    <div class="film-detail__content__left">
+      <p class="detail-box__label">Details:</p>
+    </div>
+    <div class="film-detail__content__right">
+      <div class="image-container">
+        <img src="https://placehold.co/600x400" alt="Placeholder">
+      </div>
+    </div>
+  </div>
+  <div class="film-detail__links">
+    <p class="detail-box__label">Charaktere:</p>
+    <div class="film-detail__links__holder">
+
+      @for (character of (characters() ?? []); track character.id) {
+        <app-button [routerLink]="['/characters', character.id.toString()]" [label]="character.name"></app-button>
+      }
+    </div>
+    <p class="detail-box__label">Filme:</p>
+    <div class="film-detail__links__holder">
+
+    @for (film of (films() ?? []); track film.id) {
+      <app-button [routerLink]="['/films', film.id.toString()]" [label]="film.title"></app-button>
+    }
+    </div>
+  </div>
+} @else {
+  <p>Planet nicht gefunden.</p>
+}
+
+</div>

@@ -1,13 +1,13 @@
 <h1>Planeten</h1>
 
-@if (loading()) {
+@if (loading() && !planets().length) {
   <p>Lade Planeten...</p>
 } @else if (error()) {
   <p>Fehler: {{ error() }}</p>
 } @else if (planets().length) {
   <div class="grid">
     @for (planet of planets(); track planet.id) {
-      <app-info-box>
+      <app-info-box [routerLink]="['/planets', planet.id.toString()]">
         <h2>{{ planet.name }}</h2>
       </app-info-box>
     }

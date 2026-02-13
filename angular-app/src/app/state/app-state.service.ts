@@ -3,19 +3,34 @@ import { Injectable, computed, signal } from '@angular/core';
 export interface Film {
   id: number;
   title: string;
+  episode_id: number;
   director: string;
   producer: string;
   release_date: string;
+  opening_crawl: string;
+  characterIds: number[];
+  planetIds: number[];
 }
 
 export interface Character {
   id: number;
   name: string;
+  height: string;
+  mass: string;
+  hair_color: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  gender: string;
+  filmIds: number[];
+  planetIds: number[];
 }
 
 export interface Planet {
   id: number;
   name: string;
+  films: Film[];
+  characters: Character[];
 }
 
 export interface AppState {

@@ -1,0 +1,44 @@
+<div class="film-detail detail-box">
+@if (character(); as c) {
+  <div class="film-detail__header">
+    <span class="info-box-detail__topline">Charakterdetails</span>
+    <h1>{{ c.name }}</h1>
+  </div>
+
+  <div class="film-detail__content">
+    <div class="film-detail__content__left">
+      <p class="detail-box__label">Details:</p>
+      <p><b>Größe:</b> {{ getHeight(c.height) }} m</p>
+      <p><b>Gewicht:</b> {{ c.mass }} kg</p>
+      <p><b>Haarfarbe:</b> {{ c.hair_color }}</p>
+      <p><b>Augenfarbe:</b> {{ c.eye_color }}</p>
+      <p><b>Geburtsjahr:</b> {{ c.birth_year }}</p>
+      <p><b>Geschlecht:</b> {{ c.gender }}</p>
+      <p><b>Heimatplanet:</b> <app-button [routerLink]="['/planets', c.planetIds[0].toString()]" [label]="homeworld()?.name ?? null"></app-button></p>
+    </div>
+    <div class="film-detail__content__right">
+      <div class="image-container">
+        <img src="https://placehold.co/698x374" alt="Placeholder">
+      </div>
+    </div>
+  </div>
+  <div class="film-detail__links">
+    <p class="detail-box__label">Filme:</p>
+    <div class="film-detail__links__holder">
+
+      @for (film of (films()); track film.id) {
+        <app-button [routerLink]="['/films', film.id.toString()]" [label]="film.title"></app-button>
+      }
+      <app-button [label]="'...'" (click)="openModal('film')"></app-button>
+    </div>
+  </div>
+} @else {
+  <p>Charakter nicht gefunden.</p>
+}
+
+</div>
+@if (modalOpen()) {
+  <app-modal [title]="modalType() === 'film' ? 'Film hinzufügen' : modalType() === 'character' ? 'Charakter hinzufügen' : 'Planet hinzufügen'" (close)="closeModal()">
+    <app-form-modal [type]="modalType()" (cancel)="closeModal()" (submit)="onFormSubmit($event)" />
+  </app-modal>
+}

@@ -1,6 +1,11 @@
-<section class="info-box">
-  <div class="info-box__content">
-    <ng-content></ng-content>
-  </div>
+<section class="info-box" >
+  <a [routerLink]="routerLink()" class="info-box__link">
+    <div class="info-box__content">
+      <img src="https://placehold.co/600x400" alt="Placeholder">
+      <div class="info-box__content__text">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </a>
 </section>
 

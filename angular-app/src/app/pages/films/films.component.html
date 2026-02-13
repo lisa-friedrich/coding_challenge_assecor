@@ -1,6 +1,6 @@
 <h1>Filme</h1>
 
-@if (loading()) {
+@if (loading() && !films().length) {
   <p>Lade Filme...</p>
 } @else if (error()) {
   <p>Fehler: {{ error() }}</p>

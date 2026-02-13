@@ -1,12 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-info-box',
   standalone: true,
+  imports: [RouterLink],
   templateUrl: './app-info-box.component.html',
   styleUrl: './app-info-box.component.scss',
 })
 export class AppInfoBoxComponent {
-  @Input() routerLink: string | string[] | null = null;
+  readonly routerLink = input.required<string | string[]>();
 }
 

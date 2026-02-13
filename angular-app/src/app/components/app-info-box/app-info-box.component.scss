@@ -1,7 +1,14 @@
 .info-box {
-  background-color: #bbbbbb;
-  padding: 1rem;
+  background-color: #EFEFEF;
+
   &__content {
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__content__text {
     padding: 24px;
   }
 }

@@ -1,3 +1,52 @@
-<h1>Film Detail</h1>
-<p>Hier könnten Details zu einem ausgewählten Film stehen.</p>
+<div class="film-detail detail-box">
+@if (film(); as f) {
+  <div class="film-detail__header">
+    <span class="info-box-detail__topline">Filmdetails</span>
+    <h1>{{ f.title }}</h1>
+    <span class="film-detail__header__episode">Episode {{ getEpisode(f.episode_id) }}</span>
+  </div>
 
+  <div class="film-detail__content">
+    <div class="film-detail__content__left">
+      <p class="detail-box__label">Details:</p>
+      <p><b>Direktor:</b> {{ f.director }}</p>
+      <p><b>Produzent:</b> {{ f.producer }}</p>
+      <p><b>Erscheinungsdatum:</b> {{ f.release_date | date:'dd.MM.yyyy' }}</p>
+      <p class="film-detail__content__left__opening-crawl">{{ f.opening_crawl }}</p>
+    </div>
+    <div class="film-detail__content__right">
+      <div class="image-container">
+        <img src="https://placehold.co/698x374" alt="Placeholder">
+      </div>
+    </div>
+  </div>
+  <div class="film-detail__links">
+    <p class="detail-box__label">Charaktere:</p>
+    <div class="film-detail__links__holder">
+
+      @for (character of (characters()); track character.id) {
+        <app-button [routerLink]="['/characters', character.id.toString()]" [label]="character.name"></app-button>
+      }
+
+      <app-button [label]="'...'" (click)="openModal('character')"></app-button>
+    </div>
+    <p class="detail-box__label">Planeten:</p>
+    <div class="film-detail__links__holder">
+
+    @for (planet of (planets()); track planet.id) {
+      <app-button [routerLink]="['/planets', planet.id.toString()]" [label]="planet.name"></app-button>
+    }
+    <app-button [label]="'...'" (click)="openModal('planet')"></app-button>
+    </div>
+  </div>
+} @else {
+  <p>Film nicht gefunden.</p>
+}
+
+@if (modalOpen()) {
+  <app-modal [title]="modalType() === 'film' ? 'Film hinzufügen' : modalType() === 'character' ? 'Charakter hinzufügen' : 'Planet hinzufügen'" (close)="closeModal()">
+    <app-form-modal [type]="modalType()" (cancel)="closeModal()" (submit)="onFormSubmit($event)" />
+  </app-modal>
+}
+
+</div>

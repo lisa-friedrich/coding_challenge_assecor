@@ -1,0 +1,17 @@
+@if (routerLink(); as link) {
+  <a [routerLink]="link" class="app-button">
+    @if (label(); as text) {
+      {{ text }}
+    } @else {
+      <ng-content></ng-content>
+    }
+  </a>
+} @else {
+  <button [type]="type()" [disabled]="disabled()" class="app-button" (click)="click.emit()">
+    @if (label(); as text) {
+      {{ text }}
+    } @else {
+      <ng-content></ng-content>
+    }
+  </button>
+}

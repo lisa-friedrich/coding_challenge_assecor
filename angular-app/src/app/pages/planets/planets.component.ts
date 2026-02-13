@@ -10,7 +10,7 @@ import { AppInfoBoxComponent } from '../../components/app-info-box/app-info-box.
   imports: [CommonModule, AppInfoBoxComponent],
   templateUrl: './planets.component.html',
 })
-export class PlanetsComponent implements OnInit {
+export class PlanetsComponent {
   private readonly appState = inject(AppStateService);
   private readonly swapi = inject(SwapiService);
 
@@ -18,9 +18,4 @@ export class PlanetsComponent implements OnInit {
   readonly loading = this.appState.loading;
   readonly error = this.appState.error;
 
-  ngOnInit(): void {
-    if (!this.planets().length) {
-      this.swapi.loadPlanets();
-    }
-  }
 }

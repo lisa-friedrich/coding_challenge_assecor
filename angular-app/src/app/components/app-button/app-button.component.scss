@@ -1,0 +1,28 @@
+:host {
+  display: inline-block;
+}
+
+.app-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 19px 30px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  background-color: #EFEFEF;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #6b7280;
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

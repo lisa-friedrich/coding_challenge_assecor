@@ -1,13 +1,13 @@
 <h1>Charaktere</h1>
 
-@if (loading()) {
+@if (loading() && !characters().length) {
   <p>Lade Charaktere...</p>
 } @else if (error()) {
   <p>Fehler: {{ error() }}</p>
 } @else if (characters().length) {
   <div class="grid">
     @for (character of characters(); track character.id) {
-      <app-info-box>
+      <app-info-box [routerLink]="['/characters', character.id.toString()]">
         <h2>{{ character.name }}</h2>
       </app-info-box>
     }
