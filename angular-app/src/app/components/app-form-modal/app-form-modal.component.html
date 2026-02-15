@@ -108,7 +108,6 @@
       <span class="form-modal__error">Bitte Geburtsjahr eingeben.</span>
       }
     </div>
-    <div class="form-modal__row">
       <div class="form-modal__field">
         <label for="character-gender" class="form-modal__label">Geschlecht</label>
         <select id="character-gender" formControlName="gender" class="form-modal__input">
@@ -120,7 +119,6 @@
         @if (characterForm.get('gender')?.invalid && characterForm.get('gender')?.touched) {
         <span class="form-modal__error">Bitte Geschlecht wählen.</span>
         }
-      </div>
     </div>
   </div>
   <div class="form-modal__actions">

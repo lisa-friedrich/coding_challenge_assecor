@@ -39,6 +39,9 @@ export class AppFormModalComponent {
 
   readonly planetForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
+    type: [''],
+    created_by: [''],
+    race: [''],
   });
 
   get currentForm() {
