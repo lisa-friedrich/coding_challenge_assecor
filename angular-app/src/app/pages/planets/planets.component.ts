@@ -3,11 +3,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AppStateService } from '../../state/app-state.service';
 import { SwapiService } from '../../services/swapi.service';
 import { AppInfoBoxComponent } from '../../components/app-info-box/app-info-box.component';
+import { AppLoaderComponent } from '../../components/app-loader/app-loader.component';
 
 @Component({
   selector: 'app-planets',
   standalone: true,
-  imports: [CommonModule, AppInfoBoxComponent],
+  imports: [CommonModule, AppInfoBoxComponent, AppLoaderComponent],
   templateUrl: './planets.component.html',
 })
 export class PlanetsComponent {

@@ -1,5 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { AppStateService, Character, Film, Planet } from '../../state/app-state.service';
 import { AppButtonComponent } from '../../components/app-button/app-button.component';
@@ -18,16 +20,21 @@ export class CharacterDetailComponent {
   private readonly route = inject(ActivatedRoute);
   readonly modalOpen = signal(false);
   readonly modalType = signal<FormType>('character');
-  readonly character = computed<Character | undefined>(() => this.appState.characters().find((character) => character.id === Number(this.route.snapshot.paramMap.get('id'))));
-  readonly films = computed<Film[]>(() => {
-    const charId = Number(this.route.snapshot.paramMap.get('id'));
-    return this.appState.films().filter((f) => f.characterIds.includes(charId));
-  });
+
+  private readonly routeId = toSignal(
+    this.route.paramMap.pipe(map((p) => Number(p.get('id')) ?? 0)),
+    { initialValue: 0 },
+  );
+
+  readonly character = computed<Character | undefined>(() =>
+    this.appState.characters().find((c) => c.id === this.routeId()),
+  );
+  readonly films = computed<Film[]>(() =>
+    this.appState.films().filter((f) => f.characterIds.includes(this.routeId())),
+  );
 
   readonly homeworld = computed<Planet | undefined>(() =>
-    this.appState
-      .planets()
-      .find((p) => p.id === Number(this.route.snapshot.paramMap.get('id'))),
+    this.appState.planets().find((p) => this.character()?.planetIds.includes(p.id)),
   );
 
   getHeight(height: string): string {

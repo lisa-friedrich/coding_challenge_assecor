@@ -29,17 +29,20 @@ export interface Character {
 export interface Planet {
   id: number;
   name: string;
-  films: Film[];
-  characters: Character[];
+  terrain: string;
+  population: string;
+  climate: string;
+  rotation_period: string;
+  orbital_period: string;
+  diameter: string;
+  filmIds: number[];
+  residentIds: number[];
 }
 
 export interface AppState {
   films: Film[];
   characters: Character[];
   planets: Planet[];
-  selectedFilmId: number | null;
-  selectedCharacterId: number | null;
-  selectedPlanetId: number | null;
   loading: boolean;
   error: string | null;
 }
@@ -48,9 +51,6 @@ const initialState: AppState = {
   films: [],
   characters: [],
   planets: [],
-  selectedFilmId: null,
-  selectedCharacterId: null,
-  selectedPlanetId: null,
   loading: false,
   error: null,
 };
@@ -61,18 +61,12 @@ const initialState: AppState = {
 export class AppStateService {
   private readonly _state = signal<AppState>(initialState);
 
-  // Voller State (readonly)
-  readonly state = this._state.asReadonly();
-
-  // Selektoren
   readonly films = computed(() => this._state().films);
   readonly characters = computed(() => this._state().characters);
   readonly planets = computed(() => this._state().planets);
-  readonly selectedFilmId = computed(() => this._state().selectedFilmId);
   readonly loading = computed(() => this._state().loading);
   readonly error = computed(() => this._state().error);
 
-  // Mutationen
   setFilms(films: Film[]): void {
     this._state.update((state) => ({
       ...state,
@@ -91,13 +85,6 @@ export class AppStateService {
     this._state.update((state) => ({
       ...state,
       planets,
-    }));
-  }
-
-  setSelectedFilm(id: number | null): void {
-    this._state.update((state) => ({
-      ...state,
-      selectedFilmId: id,
     }));
   }
 

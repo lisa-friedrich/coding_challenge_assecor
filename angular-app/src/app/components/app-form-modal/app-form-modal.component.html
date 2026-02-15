@@ -1,131 +1,179 @@
 @if (type() === 'film') {
-  <form [formGroup]="filmForm" (ngSubmit)="onSubmit()" class="form-modal">
+<form [formGroup]="filmForm" (ngSubmit)="onSubmit()" class="form-modal">
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="film-title" class="form-modal__label">Titel *</label>
-      <input id="film-title" type="text" formControlName="title" class="form-modal__input" placeholder="Titel eingeben" />
+      <label for="film-title" class="form-modal__label">Titel</label>
+      <input id="film-title" type="text" formControlName="title" class="form-modal__input"
+        placeholder="Titel eingeben" />
       @if (filmForm.get('title')?.invalid && filmForm.get('title')?.touched) {
-        <span class="form-modal__error">Bitte mindestens 2 Zeichen eingeben.</span>
+      <span class="form-modal__error">Bitte mindestens 2 Zeichen eingeben.</span>
       }
     </div>
+  </div>
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="film-director" class="form-modal__label">Direktor *</label>
-      <input id="film-director" type="text" formControlName="director" class="form-modal__input" placeholder="Direktor eingeben" />
+      <label for="film-director" class="form-modal__label">Direktor</label>
+      <input id="film-director" type="text" formControlName="director" class="form-modal__input"
+        placeholder="Direktor eingeben" />
       @if (filmForm.get('director')?.invalid && filmForm.get('director')?.touched) {
-        <span class="form-modal__error">Bitte Direktor eingeben.</span>
+      <span class="form-modal__error">Bitte Direktor eingeben.</span>
       }
     </div>
+  </div>
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="film-producer" class="form-modal__label">Produzent *</label>
-      <input id="film-producer" type="text" formControlName="producer" class="form-modal__input" placeholder="Produzent eingeben" />
+      <label for="film-producer" class="form-modal__label">Produzent</label>
+      <input id="film-producer" type="text" formControlName="producer" class="form-modal__input"
+        placeholder="Produzent eingeben" />
       @if (filmForm.get('producer')?.invalid && filmForm.get('producer')?.touched) {
-        <span class="form-modal__error">Bitte Produzent eingeben.</span>
+      <span class="form-modal__error">Bitte Produzent eingeben.</span>
       }
     </div>
+  </div>
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="film-release-date" class="form-modal__label">Erscheinungsdatum *</label>
-      <input id="film-release-date" type="date" formControlName="release_date" class="form-modal__input" />
+      <label for="film-release-date" class="form-modal__label">Erscheinungsdatum</label>
+      <input id="film-release-date" type="text" formControlName="release_date" class="form-modal__input"
+        placeholder="YYYY" />
       @if (filmForm.get('release_date')?.invalid && filmForm.get('release_date')?.touched) {
-        <span class="form-modal__error">Bitte Erscheinungsdatum eingeben.</span>
+      <span class="form-modal__error">Bitte Erscheinungsdatum eingeben.</span>
       }
     </div>
+  </div>
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="film-episode" class="form-modal__label">Episode *</label>
-      <input id="film-episode" type="number" formControlName="episode_id" class="form-modal__input" min="1" max="9" placeholder="1-9" />
-      @if (filmForm.get('episode_id')?.invalid && filmForm.get('episode_id')?.touched) {
-        <span class="form-modal__error">Bitte Episode (1-9) eingeben.</span>
-      }
+      <label for="film-opening-crawl" class="form-modal__label">Beschreibung</label>
+      <textarea id="film-opening-crawl" formControlName="opening_crawl" class="form-modal__input form-modal__textarea"
+        placeholder="Beschreibung" rows="6"></textarea>
     </div>
-    <div class="form-modal__field">
-      <label for="film-opening-crawl" class="form-modal__label">Opening Crawl</label>
-      <textarea id="film-opening-crawl" formControlName="opening_crawl" class="form-modal__input form-modal__textarea" placeholder="Opening Crawl Text" rows="4"></textarea>
-    </div>
-    <div class="form-modal__actions">
-      <button type="submit" class="form-modal__btn form-modal__btn--primary">Film hinzufügen</button>
-      <button type="button" class="form-modal__btn form-modal__btn--secondary" (click)="cancel.emit()">Abbrechen</button>
-    </div>
-  </form>
+  </div>
+  <div class="form-modal__actions">
+    <button type="submit" class="form-modal__btn form-modal__btn--primary">Film hinzufügen</button>
+    <button type="button" class="form-modal__btn form-modal__btn--secondary" (click)="cancel.emit()">Abbrechen</button>
+  </div>
+</form>
 } @else if (type() === 'character') {
-  <form [formGroup]="characterForm" (ngSubmit)="onSubmit()" class="form-modal">
-    <div class="form-modal__row">
-      <div class="form-modal__field">
-        <label for="character-name" class="form-modal__label">Name *</label>
-        <input id="character-name" type="text" formControlName="name" class="form-modal__input" placeholder="Name eingeben" />
-        @if (characterForm.get('name')?.invalid && characterForm.get('name')?.touched) {
-          <span class="form-modal__error">Bitte mindestens 2 Zeichen eingeben.</span>
-        }
-      </div>
-    </div>
-    <div class="form-modal__row">
+<form [formGroup]="characterForm" (ngSubmit)="onSubmit()" class="form-modal">
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="character-height" class="form-modal__label">Größe (cm) *</label>
-      <input id="character-height" type="text" formControlName="height" class="form-modal__input" placeholder="z.B. 172" />
+      <label for="character-name" class="form-modal__label">Name</label>
+      <input id="character-name" type="text" formControlName="name" class="form-modal__input"
+        placeholder="Name eingeben" />
+      @if (characterForm.get('name')?.invalid && characterForm.get('name')?.touched) {
+      <span class="form-modal__error">Bitte mindestens 2 Zeichen eingeben.</span>
+      }
+    </div>
+  </div>
+  <div class="form-modal__row">
+    <div class="form-modal__field">
+      <label for="character-height" class="form-modal__label">Größe</label>
+      <input id="character-height" type="text" formControlName="height" class="form-modal__input" placeholder="Meter" />
       @if (characterForm.get('height')?.invalid && characterForm.get('height')?.touched) {
-        <span class="form-modal__error">Bitte Größe eingeben.</span>
+      <span class="form-modal__error">Bitte Größe eingeben.</span>
       }
     </div>
     <div class="form-modal__field">
-      <label for="character-mass" class="form-modal__label">Gewicht (kg) *</label>
-      <input id="character-mass" type="text" formControlName="mass" class="form-modal__input" placeholder="z.B. 77" />
+      <label for="character-mass" class="form-modal__label">Gewicht</label>
+      <input id="character-mass" type="text" formControlName="mass" class="form-modal__input" placeholder="Kg" />
       @if (characterForm.get('mass')?.invalid && characterForm.get('mass')?.touched) {
-        <span class="form-modal__error">Bitte Gewicht eingeben.</span>
+      <span class="form-modal__error">Bitte Gewicht eingeben.</span>
       }
 
     </div>
-    </div>
-    <div class="form-modal__row">
+  </div>
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="character-hair-color" class="form-modal__label">Haarfarbe *</label>
-      <input id="character-hair-color" type="text" formControlName="hair_color" class="form-modal__input" placeholder="z.B. blond, braun, schwarz" />
+      <label for="character-hair-color" class="form-modal__label">Haarfarbe</label>
+      <input id="character-hair-color" type="text" formControlName="hair_color" class="form-modal__input"
+        placeholder="Haarfarbe eingeben" />
       @if (characterForm.get('hair_color')?.invalid && characterForm.get('hair_color')?.touched) {
-        <span class="form-modal__error">Bitte Haarfarbe eingeben.</span>
+      <span class="form-modal__error">Bitte Haarfarbe eingeben.</span>
       }
     </div>
     <div class="form-modal__field">
-      <label for="character-eye-color" class="form-modal__label">Augenfarbe *</label>
-      <input id="character-eye-color" type="text" formControlName="eye_color" class="form-modal__input" placeholder="z.B. blau, braun, grün" />
+      <label for="character-eye-color" class="form-modal__label">Augenfarbe</label>
+      <input id="character-eye-color" type="text" formControlName="eye_color" class="form-modal__input"
+        placeholder="z.B. blau, braun, grün" />
       @if (characterForm.get('eye_color')?.invalid && characterForm.get('eye_color')?.touched) {
-        <span class="form-modal__error">Bitte Augenfarbe eingeben.</span>
+      <span class="form-modal__error">Bitte Augenfarbe eingeben.</span>
       }
     </div>
+  </div>
+  <div class="form-modal__row">
+    <div class="form-modal__field">
+      <label for="character-birth-year" class="form-modal__label">Geburtsjahr</label>
+      <input id="character-birth-year" type="text" formControlName="birth_year" class="form-modal__input"
+        placeholder="z.B. 19BBY" />
+      @if (characterForm.get('birth_year')?.invalid && characterForm.get('birth_year')?.touched) {
+      <span class="form-modal__error">Bitte Geburtsjahr eingeben.</span>
+      }
     </div>
     <div class="form-modal__row">
-    <div class="form-modal__field">
-      <label for="character-birth-year" class="form-modal__label">Geburtsjahr *</label>
-      <input id="character-birth-year" type="text" formControlName="birth_year" class="form-modal__input" placeholder="z.B. 19BBY" />
-      @if (characterForm.get('birth_year')?.invalid && characterForm.get('birth_year')?.touched) {
-        <span class="form-modal__error">Bitte Geburtsjahr eingeben.</span>
-      }
-    </div>
-    <div class="form-modal__field">
-      <label for="character-gender" class="form-modal__label">Geschlecht *</label>
-      <select id="character-gender" formControlName="gender" class="form-modal__input">
-        <option value="">Bitte wählen</option>
-        <option value="male">Männlich</option>
-        <option value="female">Weiblich</option>
-        <option value="n/a">N/A</option>
-      </select>
-      @if (characterForm.get('gender')?.invalid && characterForm.get('gender')?.touched) {
+      <div class="form-modal__field">
+        <label for="character-gender" class="form-modal__label">Geschlecht</label>
+        <select id="character-gender" formControlName="gender" class="form-modal__input">
+          <option value="">Bitte wählen</option>
+          <option value="male">Männlich</option>
+          <option value="female">Weiblich</option>
+          <option value="n/a">N/A</option>
+        </select>
+        @if (characterForm.get('gender')?.invalid && characterForm.get('gender')?.touched) {
         <span class="form-modal__error">Bitte Geschlecht wählen.</span>
-      }
+        }
+      </div>
     </div>
-    </div>
-    <div class="form-modal__actions">
-      <button type="submit" class="form-modal__btn form-modal__btn--primary">Charakter hinzufügen</button>
-      <button type="button" class="form-modal__btn form-modal__btn--secondary" (click)="cancel.emit()">Abbrechen</button>
-    </div>
-  </form>
+  </div>
+  <div class="form-modal__actions">
+    <button type="submit" class="form-modal__btn form-modal__btn--primary">Charakter hinzufügen</button>
+    <button type="button" class="form-modal__btn form-modal__btn--secondary" (click)="cancel.emit()">Abbrechen</button>
+  </div>
+</form>
 } @else if (type() === 'planet') {
-  <form [formGroup]="planetForm" (ngSubmit)="onSubmit()" class="form-modal">
+<form [formGroup]="planetForm" (ngSubmit)="onSubmit()" class="form-modal">
+  <div class="form-modal__row">
     <div class="form-modal__field">
-      <label for="planet-name" class="form-modal__label">Name *</label>
-      <input id="planet-name" type="text" formControlName="name" class="form-modal__input" placeholder="Planetenname eingeben" />
+      <label for="planet-name" class="form-modal__label">Name</label>
+      <input id="planet-name" type="text" formControlName="name" class="form-modal__input"
+        placeholder="Planetenname eingeben" />
       @if (planetForm.get('name')?.invalid && planetForm.get('name')?.touched) {
-        <span class="form-modal__error">Bitte mindestens 2 Zeichen eingeben.</span>
+      <span class="form-modal__error">Bitte mindestens 2 Zeichen eingeben.</span>
       }
     </div>
-    <div class="form-modal__actions">
-      <button type="submit" class="form-modal__btn form-modal__btn--primary">Planet hinzufügen</button>
-      <button type="button" class="form-modal__btn form-modal__btn--secondary" (click)="cancel.emit()">Abbrechen</button>
+  </div>
+  <div class="form-modal__row">
+    <div class="form-modal__field">
+      <label for="planet-type" class="form-modal__label">Typ</label>
+      <select id="planet-type" formControlName="type" class="form-modal__input">
+        <option value="">Bitte wählen</option>
+        <option value="desert">Wüste</option>
+        <option value="jungle">Dschungel</option>
+        <option value="ocean">Ozean</option>
+        <option value="forest">Wald</option>
+      </select>
     </div>
-  </form>
+  </div>
+  <div class="form-modal__row">
+    <div class="form-modal__field">
+      <label for="planet-created-by" class="form-modal__label">Erstellt von</label>
+      <input id="planet-created-by" type="text" formControlName="created_by" class="form-modal__input"
+        placeholder="Created By eingeben" />
+      @if (planetForm.get('created_by')?.invalid && planetForm.get('created_by')?.touched) {
+      <span class="form-modal__error">Bitte Erstellt von eingeben.</span>
+      }
+    </div>
+  </div>
+  <div class="form-modal__row">
+    <div class="form-modal__field">
+      <label for="planet-race" class="form-modal__label">Race(s)</label>
+      <textarea id="planet-race" formControlName="race" class="form-modal__input form-modal__textarea"
+        placeholder="Race(s) eingeben" rows="6"></textarea>
+      @if (planetForm.get('race')?.invalid && planetForm.get('race')?.touched) {
+      <span class="form-modal__error">Bitte Race(s) eingeben.</span>
+      }
+    </div>
+  </div>
+  <div class="form-modal__actions">
+    <button type="submit" class="form-modal__btn form-modal__btn--primary">Namen mit Semikolon trennen</button>
+  </div>
+</form>
 }

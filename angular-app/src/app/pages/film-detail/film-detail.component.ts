@@ -71,9 +71,8 @@ export class FilmDetailComponent {
     this.modalOpen.set(false);
   }
 
-  onFormSubmit(data: any): void {
+  onFormSubmit(data: unknown): void {
     console.log('Formular abgesendet:', this.modalType(), data);
-    // Hier könntest du die Daten zum State hinzufügen
     this.closeModal();
   }
 }

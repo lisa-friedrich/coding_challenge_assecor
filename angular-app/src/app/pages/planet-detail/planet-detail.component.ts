@@ -1,7 +1,8 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 import { AppStateService, Character, Film, Planet } from '../../state/app-state.service';
-import { SwapiService } from '../../services/swapi.service';
 import { AppButtonComponent } from '../../components/app-button/app-button.component';
 
 @Component({
@@ -13,15 +14,21 @@ import { AppButtonComponent } from '../../components/app-button/app-button.compo
 })
 export class PlanetDetailComponent {
   private readonly appState = inject(AppStateService);
-  private readonly swapi = inject(SwapiService);
   private readonly route = inject(ActivatedRoute);
 
-  readonly planet = computed<Planet | undefined>(() =>
-    this.appState
-      .planets()
-      .find((p) => p.id === Number(this.route.snapshot.paramMap.get('id'))),
+  private readonly routeId = toSignal(
+    this.route.paramMap.pipe(map((p) => Number(p.get('id')) ?? 0)),
+    { initialValue: 0 },
   );
 
-  readonly characters = computed<Character[] | undefined>(() => this.appState.characters().filter((character) => this.planet()?.characters.find((c) => c.id === character.id)));
-  readonly films = computed<Film[] | undefined>(() => this.appState.films().filter((film) => this.planet()?.films.find((f) => f.id === film.id)));
+  readonly planet = computed<Planet | undefined>(() =>
+    this.appState.planets().find((p) => p.id === this.routeId()),
+  );
+
+  readonly characters = computed<Character[]>(() =>
+    this.appState.characters().filter((c) => this.planet()?.residentIds.includes(c.id) ?? false),
+  );
+  readonly films = computed<Film[]>(() =>
+    this.appState.films().filter((f) => this.planet()?.filmIds.includes(f.id) ?? false),
+  );
 }

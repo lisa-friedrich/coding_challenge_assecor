@@ -35,7 +35,6 @@ interface SwapiPerson {
   eye_color: string;
   birth_year: string;
   gender: string;
-  /** URL des Heimatplaneten (homeworld) */
   homeworld: string;
   url: string;
   films: string[];
@@ -44,8 +43,14 @@ interface SwapiPerson {
 interface SwapiPlanet {
   name: string;
   url: string;
+  terrain: string;
+  population: string;
+  climate: string;
+  rotation_period: string;
+  orbital_period: string;
+  diameter: string;
   films: string[];
-  characters: string[];
+  residents: string[];
 }
 
 function idFromUrl(url: string): number {
@@ -60,7 +65,6 @@ export class SwapiService {
   private readonly http = inject(HttpClient);
   private readonly state = inject(AppStateService);
 
-  /** Erste Seite People (für schnellen First Paint). */
   private getFirstPagePeople$() {
     return this.http
       .get<SwapiPaginatedResponse<SwapiPerson>>(`${BASE}/people/`)
@@ -85,26 +89,27 @@ export class SwapiService {
       );
   }
 
-  /** Erste Seite Planeten (für schnellen First Paint). */
   private getFirstPagePlanets$() {
     return this.http
       .get<SwapiPaginatedResponse<SwapiPlanet>>(`${BASE}/planets/`)
       .pipe(
         map((res) =>
-          res.results.map(
-            (p) =>
-              ({
-                id: idFromUrl(p.url),
-                name: p.name,
-                films: [],
-                characters: [],
-              } as Planet),
-          ),
+          res.results.map((p) => ({
+            id: idFromUrl(p.url),
+            name: p.name,
+            terrain: p.terrain,
+            population: p.population,
+            climate: p.climate,
+            rotation_period: p.rotation_period,
+            orbital_period: p.orbital_period,
+            diameter: p.diameter,
+            filmIds: p.films.map((url) => idFromUrl(url)),
+            residentIds: p.residents.map((url) => idFromUrl(url)),
+          } as Planet)),
         ),
       );
   }
 
-  /** Lädt alle People-Seiten (für vollständige Daten im Hintergrund). */
   private loadAllPeople$() {
     return this.http
       .get<SwapiPaginatedResponse<SwapiPerson>>(`${BASE}/people/`)
@@ -133,7 +138,6 @@ export class SwapiService {
       );
   }
 
-  /** Lädt alle Planeten-Seiten (für vollständige Daten im Hintergrund). */
   private loadAllPlanets$() {
     return this.http
       .get<SwapiPaginatedResponse<SwapiPlanet>>(`${BASE}/planets/`)
@@ -143,7 +147,7 @@ export class SwapiService {
         ),
         reduce((acc: SwapiPlanet[], res) => acc.concat(res.results), []),
         map((planets) =>
-          planets.map((p) => ({ id: idFromUrl(p.url), name: p.name, films: [], characters: [] } as Planet)),
+          planets.map((p) => ({ id: idFromUrl(p.url), name: p.name, terrain: p.terrain, population: p.population, climate: p.climate, rotation_period: p.rotation_period, orbital_period: p.orbital_period, diameter: p.diameter, filmIds: p.films.map((url) => idFromUrl(url)), residentIds: p.residents.map((url) => idFromUrl(url)) } as Planet)),
         ),
       );
   }
@@ -200,7 +204,6 @@ export class SwapiService {
         error: () => {},
       });
 
-    // 2) Hintergrund: alle People + alle Planeten nachladen und State aktualisieren
     forkJoin({
       people: this.loadAllPeople$(),
       planets: this.loadAllPlanets$(),
@@ -219,17 +222,5 @@ export class SwapiService {
           this.state.setPlanets(planets as Planet[]);
         }
       });
-  }
-
-  loadFilms(): void {
-    this.loadAppData();
-  }
-
-  loadCharacters(): void {
-    this.loadAppData();
-  }
-
-  loadPlanets(): void {
-    this.loadAppData();
   }
 }

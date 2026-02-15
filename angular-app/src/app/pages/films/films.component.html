@@ -1,7 +1,7 @@
 <h1>Filme</h1>
 
 @if (loading() && !films().length) {
-  <p>Lade Filme...</p>
+  <app-loader></app-loader>
 } @else if (error()) {
   <p>Fehler: {{ error() }}</p>
 } @else if (films().length) {

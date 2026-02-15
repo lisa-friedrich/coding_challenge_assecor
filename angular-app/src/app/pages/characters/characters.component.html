@@ -1,7 +1,7 @@
 <h1>Charaktere</h1>
 
 @if (loading() && !characters().length) {
-  <p>Lade Charaktere...</p>
+  <app-loader></app-loader>
 } @else if (error()) {
   <p>Fehler: {{ error() }}</p>
 } @else if (characters().length) {

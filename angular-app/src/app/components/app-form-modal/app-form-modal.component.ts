@@ -18,7 +18,6 @@ export class AppFormModalComponent {
   
   readonly type = input<FormType>('film');
 
-  // Film-Formular
   readonly filmForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(2)]],
     director: ['', Validators.required],
@@ -28,7 +27,6 @@ export class AppFormModalComponent {
     opening_crawl: [''],
   });
 
-  // Character-Formular
   readonly characterForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     height: ['', Validators.required],
@@ -39,7 +37,6 @@ export class AppFormModalComponent {
     gender: ['', Validators.required],
   });
 
-  // Planet-Formular
   readonly planetForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
   });
@@ -54,19 +51,6 @@ export class AppFormModalComponent {
         return this.planetForm;
       default:
         return this.filmForm;
-    }
-  }
-
-  get modalTitle(): string {
-    switch (this.type()) {
-      case 'film':
-        return 'Film hinzufügen';
-      case 'character':
-        return 'Charakter hinzufügen';
-      case 'planet':
-        return 'Planet hinzufügen';
-      default:
-        return 'Eingabemaske';
     }
   }
 

@@ -1,7 +1,7 @@
 <h1>Planeten</h1>
 
 @if (loading() && !planets().length) {
-  <p>Lade Planeten...</p>
+  <app-loader></app-loader>
 } @else if (error()) {
   <p>Fehler: {{ error() }}</p>
 } @else if (planets().length) {

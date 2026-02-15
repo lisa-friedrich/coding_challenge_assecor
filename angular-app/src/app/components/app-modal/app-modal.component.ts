@@ -7,9 +7,7 @@ import { Component, output, input } from '@angular/core';
   styleUrl: './app-modal.component.scss',
 })
 export class AppModalComponent {
-  /** Titel der Modal-Überschrift */
   readonly title = input<string>('Formular');
-  /** Schließen (Klick auf Overlay oder X) */
   readonly close = output<void>();
 
   onBackdropClick(): void {
