@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, reduce } from 'rxjs/operators';
+import { catchError, map, reduce, tap } from 'rxjs/operators';
 import { expand } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { forkJoin, merge, Observable, of } from 'rxjs';
 import { EMPTY } from 'rxjs';
 import { AppStateService, Film, Character, Planet } from '../state/app-state.service';
 
@@ -152,75 +152,72 @@ export class SwapiService {
       );
   }
 
-  loadAppData(): void {
+  loadAppData(): Observable<void> {
     if (this.state.films().length > 0) {
       this.state.setLoading(false);
-      return;
+      return of(undefined);
     }
 
     this.state.setLoading(true);
     this.state.setError(null);
 
-    forkJoin({
+    const firstLoad$ = forkJoin({
       films: this.http.get<SwapiListResponse<SwapiFilm>>(`${BASE}/films/`),
       people: this.getFirstPagePeople$(),
       planets: this.getFirstPagePlanets$(),
-    })
-      .pipe(
-        map(({ films, people, planets }) => {
-          const chars = people as Character[];
-          const plan = planets as Planet[];
+    }).pipe(
+      map(({ films, people, planets }) => {
+        const chars = people as Character[];
+        const plan = planets as Planet[];
+        const filmList = films.results
+          .sort((a, b) => a.episode_id - b.episode_id)
+          .map<Film>((f, i) => ({
+            id: i + 1,
+            title: f.title,
+            episode_id: f.episode_id,
+            director: f.director,
+            producer: f.producer,
+            release_date: f.release_date,
+            opening_crawl: f.opening_crawl,
+            characterIds: f.characters.map((url) => idFromUrl(url)),
+            planetIds: f.planets.map((url) => idFromUrl(url)),
+          }));
+        return { films: filmList, characters: chars, planets: plan };
+      }),
+      tap(({ films, characters, planets }) => {
+        this.state.setFilms(films);
+        this.state.setCharacters(characters);
+        this.state.setPlanets(planets);
+        this.state.setLoading(false);
+      }),
+      catchError((err) => {
+        this.state.setLoading(false);
+        this.state.setError('Daten konnten nicht geladen werden.');
+        console.error(err);
+        throw err;
+      }),
+      map(() => undefined as void),
+    );
 
-          const filmList = films.results
-            .sort((a, b) => a.episode_id - b.episode_id)
-            .map<Film>((f, i) => ({
-              id: i + 1,
-              title: f.title,
-              episode_id: f.episode_id,
-              director: f.director,
-              producer: f.producer,
-              release_date: f.release_date,
-              opening_crawl: f.opening_crawl,
-              characterIds: f.characters.map((url) => idFromUrl(url)),
-              planetIds: f.planets.map((url) => idFromUrl(url)),
-            }));
-
-          return { films: filmList, characters: chars, planets: plan };
-        }),
-        catchError((err) => {
-          this.state.setLoading(false);
-          this.state.setError('Daten konnten nicht geladen werden.');
-          console.error(err);
-          throw err;
-        }),
-      )
-      .subscribe({
-        next: ({ films, characters, planets }) => {
-          this.state.setFilms(films);
-          this.state.setCharacters(characters);
-          this.state.setPlanets(planets);
-          this.state.setLoading(false);
-        },
-        error: () => {},
-      });
-
-    forkJoin({
+    const backgroundLoad$ = forkJoin({
       people: this.loadAllPeople$(),
       planets: this.loadAllPlanets$(),
-    })
-      .pipe(
-        catchError((err) => {
-          console.error('Hintergrund-Laden fehlgeschlagen:', err);
-          return EMPTY;
-        }),
-      )
-      .subscribe(({ people, planets }) => {
+    }).pipe(
+      catchError((err) => {
+        console.error('Hintergrund-Laden fehlgeschlagen:', err);
+        return EMPTY;
+      }),
+      tap(({ people, planets }) => {
         if (people) {
           this.state.setCharacters(people as Character[]);
         }
         if (planets) {
           this.state.setPlanets(planets as Planet[]);
         }
-      });
+      }),
+      map(() => undefined as void),
+    );
+
+    return merge(firstLoad$, backgroundLoad$);
   }
 }

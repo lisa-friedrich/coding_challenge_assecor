@@ -1,5 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { DestroyRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HeaderComponent } from './header/header.component';
 import { SwapiService } from './services/swapi.service';
 import { AppModalComponent } from './components/app-modal/app-modal.component';
@@ -15,9 +17,10 @@ export class App implements OnInit {
   protected readonly title = signal('angular-app');
   protected readonly modalOpen = signal(false);
   private readonly swapi = inject(SwapiService);
+  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    this.swapi.loadAppData();
+    this.swapi.loadAppData().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
   }
 
   openFormModal(): void {
